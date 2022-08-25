@@ -1,0 +1,25 @@
+version: '3.5'
+
+services:
+  recipe-application-container:
+    container_name: recipe-application-container
+    build:
+      context: ../
+      dockerfile: ./docker/app/Dockerfile
+    depends_on:
+      - db-container
+    ports:
+      - 8080:8080
+    env_file:
+      - SQL_DB_ENV.env
+
+  db-container:
+    container_name: db-container
+    image: mysql:5.7
+    ports:
+      - 3306:3306
+    env_file:
+      - SQL_DB_ENV.env
+    restart: always
+    volumes:
+      - /tmp/sql_data:/var/lib/mysql3
